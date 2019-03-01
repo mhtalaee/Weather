@@ -1,5 +1,5 @@
 
-package ir.goldenmind.weather.model.openweathermap;
+package ir.goldenmind.weather.model.openweathermap.current;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +11,7 @@ public class Wind {
     private Double speed;
     @SerializedName("deg")
     @Expose
-    private Double deg;
+    private Integer deg;
 
     public Double getSpeed() {
         return speed;
@@ -21,11 +21,11 @@ public class Wind {
         this.speed = speed;
     }
 
-    public Double getDeg() {
+    public Integer getDeg() {
         return deg;
     }
 
-    public void setDeg(Double deg) {
+    public void setDeg(Integer deg) {
         this.deg = deg;
     }
 

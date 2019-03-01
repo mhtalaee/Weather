@@ -1,5 +1,5 @@
 
-package ir.goldenmind.weather.model.openweathermap;
+package ir.goldenmind.weather.model.openweathermap.current;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
