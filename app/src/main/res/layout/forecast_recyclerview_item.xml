@@ -1,39 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/imgWeatherIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
-    <TextView
-        android:id="@+id/tvUnix"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="15sp" />
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#FF0000"
+    android:layout_marginStart="2dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="2dp">
 
     <TextView
         android:id="@+id/tvForecastDate"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/tvForecastTime"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:textSize="15sp" />
 
+    <ImageView
+        android:id="@+id/imgWeatherIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
     <TextView
         android:id="@+id/tvForecastTemperature"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:textSize="15sp" />
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvForecastWind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvForecastPressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="10sp" />
 
 </LinearLayout>

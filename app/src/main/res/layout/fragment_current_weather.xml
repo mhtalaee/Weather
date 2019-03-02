@@ -1,40 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="#dd45ee"
+    android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:background="#699DDA"
-        android:orientation="vertical">
+        android:layout_height="350dp"
+        android:background="#15a0ff"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvCurrentLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/tvCurrentTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvCurrentTemperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
-        <TextView
-            android:id="@+id/tvCurrentLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvCurrentWind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/tvCurrentTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvCurrentPressure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/tvCurrentTemperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvCurrentCloudiness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
+            <TextView
+                android:id="@+id/tvCurrentHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/imgWeatherStatus"
+            <TextView
+                android:id="@+id/tvCurrentSunrise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvCurrentSunset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:lottie_rawRes="@raw/sun" />
+            android:background="#15a0ff"
+            android:gravity="top|end">
+
+            <com.airbnb.lottie.LottieAnimationView
+
+                android:id="@+id/imgWeatherStatus"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:lottie_rawRes="@raw/sun" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -42,12 +86,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:gravity="center">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/forecastRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="140dp"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:background="#00FFFF"></androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
+
 </LinearLayout>

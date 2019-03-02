@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.L;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -39,18 +40,26 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public void onBindViewHolder(@NonNull ForecastViewHolder holder, int position) {
-        DecimalFormat df2 = new DecimalFormat(".##");
-        String temperature = df2.format(weatherForecastList.get(position).getMain().getTemp() - 273.15D);
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-dd");
-        String formattedTime = timeFormat.format(new Date(weatherForecastList.get(position).getDt() * 1000L));
-        String formattedDate = dateFormat.format(new Date(weatherForecastList.get(position).getDt() * 1000L));
-        holder.tvForecastTemperature.setText(temperature + "°C");
-        holder.tvForecastTime.setText(formattedTime);
+
+        List<L> forcastRecord = weatherForecastList.get(position);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd");
+        String formattedDate = dateFormat.format(new Date(forcastRecord.getDt() * 1000L));
         holder.tvForecastDate.setText(formattedDate);
-        holder.tvUnix.setText(weatherForecastList.get(position).getDt().toString() + "/" +
-                weatherForecastList.get(position).getMain().getTemp());
-        Picasso.get().load(weatherIconBaseUrl + ((Weather) weatherForecastList.get(position).getWeather().get(0)).getIcon() + ".png").into(holder.imgWeatherIcon);
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String formattedTime = timeFormat.format(new Date(forcastRecord.getDt() * 1000L));
+        holder.tvForecastTime.setText(formattedTime);
+
+        Picasso.get().load(weatherIconBaseUrl + ((Weather) forcastRecord.getWeather().get(0)).getIcon() + ".png").resize(50, 50).centerCrop().into(holder.imgWeatherIcon);
+
+        DecimalFormat tempFormat = new DecimalFormat(".#");
+        String temperature = tempFormat.format(forcastRecord.getMain().getTemp() - 273.15D);
+        holder.tvForecastTemperature.setText(temperature + " °C");
+
+        holder.tvForecastWind.setText(forcastRecord.getWind().getSpeed().toString() + " m/s");
+        holder.tvForecastPressure.setText(forcastRecord.getMain().getPressure().toString());
+
     }
 
     @Override
@@ -60,19 +69,22 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     class ForecastViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvForecastTemperature;
         TextView tvForecastDate;
         TextView tvForecastTime;
-        TextView tvUnix;
         ImageView imgWeatherIcon;
+        TextView tvForecastTemperature;
+        TextView tvForecastWind;
+        TextView tvForecastPressure;
 
         public ForecastViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvForecastTemperature = itemView.findViewById(R.id.tvForecastTemperature);
+
             tvForecastDate = itemView.findViewById(R.id.tvForecastDate);
             tvForecastTime = itemView.findViewById(R.id.tvForecastTime);
-            tvUnix = itemView.findViewById(R.id.tvUnix);
             imgWeatherIcon = itemView.findViewById((R.id.imgWeatherIcon));
+            tvForecastTemperature = itemView.findViewById(R.id.tvForecastTemperature);
+            tvForecastWind = itemView.findViewById(R.id.tvForecastWind);
+            tvForecastPressure = itemView.findViewById(R.id.tvForecastPressure);
         }
     }
 
