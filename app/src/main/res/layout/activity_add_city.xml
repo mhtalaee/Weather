@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddCityActivity">
+    tools:context=".AddCityActivity"
+    android:orientation="vertical">
 
     <AutoCompleteTextView
         android:id="@+id/etCountry"
@@ -12,4 +13,21 @@
         android:completionThreshold="2"
         android:hint="@string/enter_country" />
 
+    <AutoCompleteTextView
+        android:id="@+id/etCity"
+        android:layout_width="270dp"
+        android:layout_height="50dp"
+        android:completionThreshold="2"
+        android:hint="Enter City" />
+
+    <ImageView
+        android:id="@+id/imgFlag"
+        android:layout_width="64dp"
+        android:layout_height="64dp" />
+
+    <Button
+        android:id="@+id/btnAddCity"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:text="@string/add_city"/>
 </LinearLayout>
