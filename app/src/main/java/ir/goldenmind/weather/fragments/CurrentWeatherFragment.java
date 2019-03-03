@@ -75,12 +75,6 @@ public class CurrentWeatherFragment extends Fragment {
 
     private void getCurrentWeatherData() {
 
-
-
-
-
-
-
         AsyncHttpClient currentWeatherClient = new AsyncHttpClient();
         String currentWeatherUrl = currentWeatherApiBaseUrl + weatherApiId;
 

@@ -35,7 +35,7 @@ public class AddCityActivity extends AppCompatActivity {
     AutoCompleteTextView etCity;
     JSONObject countries = null;
     ImageView imgFlag;
-    Button btnAddCity;
+    Button btnAdd;
     String cityCode;
     String countryCode;
     private ArrayList<City> userCities;
@@ -47,7 +47,7 @@ public class AddCityActivity extends AppCompatActivity {
         etCountry = findViewById(R.id.etCountry);
         etCity = findViewById(R.id.etCity);
         imgFlag = findViewById(R.id.imgFlag);
-        btnAddCity = findViewById(R.id.btnAddCity);
+        btnAdd = findViewById(R.id.btnAdd);
 
         Hawk.init(AddCityActivity.this).build();
 
@@ -103,7 +103,6 @@ public class AddCityActivity extends AppCompatActivity {
                 while (keys.hasNext()) {
                     cityCode = keys.next();
 
-
                     try {
                         JSONObject country = (JSONObject) countries.get(cityCode);
                         if (country.get("name").equals(etCountry.getText().toString())) {
@@ -129,19 +128,14 @@ public class AddCityActivity extends AppCompatActivity {
             }
         });
 
-        btnAddCity.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 userCities = (Hawk.contains("UserCities")) ? userCities = Hawk.get("UserCities") : new ArrayList<City>();
-                try {
-
-
                     City userCity = new City(countryCode, etCountry.getText().toString(), etCity.getText().toString());
                     userCities.add(userCity);
                     Hawk.put("UserCities", userCities);
-                } catch (Exception e) {
-                    int i = 0;
-                }
+                    finish();
             }
         });
 

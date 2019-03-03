@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import ir.goldenmind.weather.adapters.MainPagerAdapter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v13.FragmentPagerItemAdapter;
@@ -19,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager mainPager;
     MainPagerAdapter mainPagerAdapter;
     SmartTabLayout smartTabLayout;
+    Button btnAddCity;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btnAddCity = findViewById(R.id.btnAddCity);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(MainActivity.this, mDrawerLayout, R.string.open, R.string.close);
@@ -41,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
 
         smartTabLayout = findViewById(R.id.smartTabLayout);
         smartTabLayout.setViewPager(mainPager);
+
+        btnAddCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToAddCity =  new Intent(MainActivity.this, AddCityActivity.class);
+                startActivity(intentToAddCity);
+            }
+        });
 
     }
 
