@@ -4,4 +4,6 @@
     <string name="open">Open</string>
     <string name="enter_country">Enter Country</string>
     <string name="add_city">Add City</string>
+    <string name="default_city">Tehran</string>
+    <string name="default_country_code">IR</string>
 </resources>

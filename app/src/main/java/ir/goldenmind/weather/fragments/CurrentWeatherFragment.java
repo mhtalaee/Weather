@@ -1,9 +1,14 @@
 package ir.goldenmind.weather.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -11,6 +16,7 @@ import com.airbnb.lottie.LottieDrawable;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.orhanobut.hawk.Hawk;
 
 import org.json.JSONObject;
 
@@ -24,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cz.msebera.android.httpclient.Header;
+import ir.goldenmind.weather.MainActivity;
 import ir.goldenmind.weather.R;
 import ir.goldenmind.weather.adapters.ForecastAdapter;
 import ir.goldenmind.weather.model.openweathermap.current.CurrentWeatherResponse;
@@ -32,8 +39,8 @@ import ir.goldenmind.weather.model.openweathermap.forecast.WeatherResponse;
 
 public class CurrentWeatherFragment extends Fragment {
 
-    static final String currentWeatherApiBaseUrl = "http://api.openweathermap.org/data/2.5/weather?q=Tehran,IR";
-    static final String forecastWeatherApiBaseUrl = "http://api.openweathermap.org/data/2.5/forecast?q=Tehran,IR";
+    static final String currentWeatherApiBaseUrl = "http://api.openweathermap.org/data/2.5/weather?q=";
+    static final String forecastWeatherApiBaseUrl = "http://api.openweathermap.org/data/2.5/forecast?q=";
     static final String weatherApiId = "&APPID=36d8b5c48835b6f93f6656b065affb46";
     TextView tvCurrentLocation;
     TextView tvCurrentTime;
@@ -47,11 +54,23 @@ public class CurrentWeatherFragment extends Fragment {
     LottieAnimationView imgWeatherStatus;
     RecyclerView forecastRecyclerView;
     ForecastAdapter forecastAdapter;
+    String selectedCityName;
+    String selectedCountryCode;
+    Context context;
+    ProgressBar currentWeatherProgressBar;
+    LinearLayout layoutCurrent;
 
+    ProgressBar forecastWeatherProgressBar;
+
+    @SuppressLint("ValidFragment")
+    public CurrentWeatherFragment(Context context) {
+        this.context = context;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Hawk.init(getContext()).build();
         View vCurrentWeather = inflater.inflate(R.layout.fragment_current_weather, container, Boolean.FALSE);
 
         tvCurrentLocation = vCurrentWeather.findViewById(R.id.tvCurrentLocation);
@@ -67,18 +86,39 @@ public class CurrentWeatherFragment extends Fragment {
         imgWeatherStatus = vCurrentWeather.findViewById(R.id.imgWeatherStatus);
         forecastRecyclerView = vCurrentWeather.findViewById(R.id.forecastRecyclerView);
 
-        getCurrentWeatherData();
-        getForecastWeatherData();
+        currentWeatherProgressBar = vCurrentWeather.findViewById(R.id.currentWeatherProgressBar);
+        layoutCurrent = vCurrentWeather.findViewById(R.id.layoutCurrent);
+        forecastWeatherProgressBar = vCurrentWeather.findViewById(R.id.forecastWeatherProgressBar);
+
+//        selectedCityName = Hawk.get("SelectedCityName");
+//        selectedCountryCode = Hawk.get("SelectedCountryCode");
+//
+//        getCurrentWeatherData(selectedCityName, selectedCountryCode);
+//        getForecastWeatherData(selectedCityName, selectedCountryCode);
 
         return vCurrentWeather;
     }
 
-    private void getCurrentWeatherData() {
+    private void getCurrentWeatherData(String cityName, String countryCode) {
 
         AsyncHttpClient currentWeatherClient = new AsyncHttpClient();
-        String currentWeatherUrl = currentWeatherApiBaseUrl + weatherApiId;
+
+        String currentWeatherUrl = currentWeatherApiBaseUrl + cityName + "," + countryCode + weatherApiId;
 
         currentWeatherClient.get(currentWeatherUrl, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                currentWeatherProgressBar.setVisibility(ProgressBar.VISIBLE);
+                super.onStart();
+            }
+
+            @Override
+            public void onFinish() {
+                currentWeatherProgressBar.setVisibility(ProgressBar.GONE);
+                layoutCurrent.setVisibility(ProgressBar.VISIBLE);
+                super.onFinish();
+            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -114,7 +154,6 @@ public class CurrentWeatherFragment extends Fragment {
                 tvCurrentSunset.setText(formattedSunset);
 
 
-
                 super.onSuccess(statusCode, headers, response);
             }
 
@@ -122,12 +161,25 @@ public class CurrentWeatherFragment extends Fragment {
 
     }
 
-    private void getForecastWeatherData() {
+    private void getForecastWeatherData(String cityName, String countryCode) {
 
         AsyncHttpClient forecastWeatherClient = new AsyncHttpClient();
-        String forecastWeatherUrl = forecastWeatherApiBaseUrl + weatherApiId;
+        String forecastWeatherUrl = forecastWeatherApiBaseUrl + cityName + "," + countryCode + weatherApiId;
 
         forecastWeatherClient.get(forecastWeatherUrl, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                forecastWeatherProgressBar.setVisibility(ProgressBar.VISIBLE);
+                super.onStart();
+            }
+
+            @Override
+            public void onFinish() {
+                forecastWeatherProgressBar.setVisibility(ProgressBar.GONE);
+                forecastRecyclerView.setVisibility(ProgressBar.VISIBLE);
+                super.onFinish();
+            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -154,4 +206,24 @@ public class CurrentWeatherFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        Hawk.init(context).build();
+
+        if (isVisibleToUser) {
+            if (!Hawk.contains("SelectedCityName")) {
+                selectedCityName = context.getResources().getString(R.string.default_city);
+                selectedCountryCode = context.getResources().getString(R.string.default_country_code);
+            } else {
+                selectedCityName = Hawk.get("SelectedCityName");
+                selectedCountryCode = Hawk.get("SelectedCountryCode");
+            }
+
+            getCurrentWeatherData(selectedCityName, selectedCountryCode);
+            getForecastWeatherData(selectedCityName, selectedCountryCode);
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
 }

@@ -11,8 +11,10 @@ import ir.goldenmind.weather.fragments.CurrentWeatherFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
+    Context context;
     public MainPagerAdapter(FragmentManager fragmentManager, Context context) {
         super(fragmentManager);
+        this.context = context;
     }
 
     @Override
@@ -20,11 +22,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return new CurrentWeatherFragment();
+                return new CurrentWeatherFragment(context);
             case 1:
                 return new CitiesFragment();
             default:
-                return new CurrentWeatherFragment();
+                return new CurrentWeatherFragment(context);
         }
     }
 
