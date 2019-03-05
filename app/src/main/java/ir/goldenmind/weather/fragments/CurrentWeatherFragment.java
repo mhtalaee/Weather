@@ -43,7 +43,6 @@ public class CurrentWeatherFragment extends Fragment {
     static final String forecastWeatherApiBaseUrl = "http://api.openweathermap.org/data/2.5/forecast?q=";
     static final String weatherApiId = "&APPID=36d8b5c48835b6f93f6656b065affb46";
     TextView tvCurrentLocation;
-    //    TextView tvCurrentTime;
     TextView tvCurrentTemperature;
     TextView tvCurrentWind;
     TextView tvCurrentPressure;
@@ -56,25 +55,19 @@ public class CurrentWeatherFragment extends Fragment {
     ForecastAdapter forecastAdapter;
     String selectedCityName;
     String selectedCountryCode;
-    Context context;
     ProgressBar currentWeatherProgressBar;
     LinearLayout layoutCurrent;
-
+    View vCurrentWeather;
     ProgressBar forecastWeatherProgressBar;
 
     public CurrentWeatherFragment() {
     }
 
-    @SuppressLint("ValidFragment")
-    public CurrentWeatherFragment(Context context) {
-        this.context = context;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Hawk.init(getContext()).build();
-        View vCurrentWeather = inflater.inflate(R.layout.fragment_current_weather, container, Boolean.FALSE);
+        vCurrentWeather = inflater.inflate(R.layout.fragment_current_weather, container, Boolean.FALSE);
+        Hawk.init(vCurrentWeather.getContext()).build();
 
         tvCurrentLocation = vCurrentWeather.findViewById(R.id.tvCurrentLocation);
 //        tvCurrentTime = vCurrentWeather.findViewById(R.id.tvCurrentTime);
@@ -93,11 +86,16 @@ public class CurrentWeatherFragment extends Fragment {
         layoutCurrent = vCurrentWeather.findViewById(R.id.layoutCurrent);
         forecastWeatherProgressBar = vCurrentWeather.findViewById(R.id.forecastWeatherProgressBar);
 
-//        selectedCityName = Hawk.get("SelectedCityName");
-//        selectedCountryCode = Hawk.get("SelectedCountryCode");
-//
-//        getCurrentWeatherData(selectedCityName, selectedCountryCode);
-//        getForecastWeatherData(selectedCityName, selectedCountryCode);
+        if (Hawk.contains("SelectedCityName")) {
+            selectedCityName = Hawk.get("SelectedCityName");
+            selectedCountryCode = Hawk.get("SelectedCountryCode");
+        } else {
+            selectedCityName = vCurrentWeather.getContext().getResources().getString(R.string.default_city);
+            selectedCountryCode = vCurrentWeather.getContext().getResources().getString(R.string.default_country_code);
+        }
+
+        getCurrentWeatherData(selectedCityName, selectedCountryCode);
+        getForecastWeatherData(selectedCityName, selectedCountryCode);
 
         return vCurrentWeather;
     }
@@ -113,6 +111,7 @@ public class CurrentWeatherFragment extends Fragment {
             @Override
             public void onStart() {
                 currentWeatherProgressBar.setVisibility(ProgressBar.VISIBLE);
+                layoutCurrent.setVisibility(View.GONE);
                 super.onStart();
             }
 
@@ -130,9 +129,6 @@ public class CurrentWeatherFragment extends Fragment {
                 CurrentWeatherResponse currentWeatherResponse = gson.fromJson(response.toString(), CurrentWeatherResponse.class);
 
                 tvCurrentLocation.setText(currentWeatherResponse.getName());
-
-//                SimpleDateFormat currentDateFormat = new SimpleDateFormat("HH:mm");
-//                tvCurrentTime.setText(currentDateFormat.format(new Date()));
 
                 DecimalFormat tempFormat = new DecimalFormat(".#");
                 String temperature = tempFormat.format(currentWeatherResponse.getMain().getTemp() - 273.15D);
@@ -158,9 +154,7 @@ public class CurrentWeatherFragment extends Fragment {
 
                 super.onSuccess(statusCode, headers, response);
             }
-
         });
-
     }
 
     private void getForecastWeatherData(String cityName, String countryCode) {
@@ -173,13 +167,14 @@ public class CurrentWeatherFragment extends Fragment {
             @Override
             public void onStart() {
                 forecastWeatherProgressBar.setVisibility(ProgressBar.VISIBLE);
+                forecastRecyclerView.setVisibility(View.GONE);
                 super.onStart();
             }
 
             @Override
             public void onFinish() {
                 forecastWeatherProgressBar.setVisibility(ProgressBar.GONE);
-                forecastRecyclerView.setVisibility(ProgressBar.VISIBLE);
+                forecastRecyclerView.setVisibility(View.VISIBLE);
                 super.onFinish();
             }
 
@@ -201,7 +196,6 @@ public class CurrentWeatherFragment extends Fragment {
 
     private int getWeatherStatusImage(String weatherStatus) {
         try {
-
             return R.raw.class.getField(weatherStatus.toLowerCase()).getInt(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             return R.raw.clear;
@@ -210,12 +204,13 @@ public class CurrentWeatherFragment extends Fragment {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        Hawk.init(context).build();
 
-        if (isVisibleToUser) {
+        if (isVisibleToUser && vCurrentWeather != null) {
+            Hawk.init(vCurrentWeather.getContext()).build();
+
             if (!Hawk.contains("SelectedCityName")) {
-                selectedCityName = context.getResources().getString(R.string.default_city);
-                selectedCountryCode = context.getResources().getString(R.string.default_country_code);
+                selectedCityName = vCurrentWeather.getContext().getResources().getString(R.string.default_city);
+                selectedCountryCode = vCurrentWeather.getContext().getResources().getString(R.string.default_country_code);
             } else {
                 selectedCityName = Hawk.get("SelectedCityName");
                 selectedCountryCode = Hawk.get("SelectedCountryCode");
@@ -226,5 +221,4 @@ public class CurrentWeatherFragment extends Fragment {
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
-
 }

@@ -22,11 +22,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return new CurrentWeatherFragment(context);
+                return new CurrentWeatherFragment();
             case 1:
                 return new CitiesFragment();
             default:
-                return new CurrentWeatherFragment(context);
+                return new CurrentWeatherFragment();
         }
     }
 
