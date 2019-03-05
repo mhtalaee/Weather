@@ -43,7 +43,7 @@ public class CurrentWeatherFragment extends Fragment {
     static final String forecastWeatherApiBaseUrl = "http://api.openweathermap.org/data/2.5/forecast?q=";
     static final String weatherApiId = "&APPID=36d8b5c48835b6f93f6656b065affb46";
     TextView tvCurrentLocation;
-    TextView tvCurrentTime;
+    //    TextView tvCurrentTime;
     TextView tvCurrentTemperature;
     TextView tvCurrentWind;
     TextView tvCurrentPressure;
@@ -62,6 +62,9 @@ public class CurrentWeatherFragment extends Fragment {
 
     ProgressBar forecastWeatherProgressBar;
 
+    public CurrentWeatherFragment() {
+    }
+
     @SuppressLint("ValidFragment")
     public CurrentWeatherFragment(Context context) {
         this.context = context;
@@ -74,7 +77,7 @@ public class CurrentWeatherFragment extends Fragment {
         View vCurrentWeather = inflater.inflate(R.layout.fragment_current_weather, container, Boolean.FALSE);
 
         tvCurrentLocation = vCurrentWeather.findViewById(R.id.tvCurrentLocation);
-        tvCurrentTime = vCurrentWeather.findViewById(R.id.tvCurrentTime);
+//        tvCurrentTime = vCurrentWeather.findViewById(R.id.tvCurrentTime);
         tvCurrentTemperature = vCurrentWeather.findViewById(R.id.tvCurrentTemperature);
         tvCurrentWind = vCurrentWeather.findViewById(R.id.tvCurrentWind);
         tvCurrentPressure = vCurrentWeather.findViewById(R.id.tvCurrentPressure);
@@ -128,15 +131,14 @@ public class CurrentWeatherFragment extends Fragment {
 
                 tvCurrentLocation.setText(currentWeatherResponse.getName());
 
-                SimpleDateFormat currentDateFormat = new SimpleDateFormat("HH:mm");
-                tvCurrentTime.setText(currentDateFormat.format(new Date()));
+//                SimpleDateFormat currentDateFormat = new SimpleDateFormat("HH:mm");
+//                tvCurrentTime.setText(currentDateFormat.format(new Date()));
 
                 DecimalFormat tempFormat = new DecimalFormat(".#");
                 String temperature = tempFormat.format(currentWeatherResponse.getMain().getTemp() - 273.15D);
                 tvCurrentTemperature.setText(temperature + "°C");
 
                 imgWeatherStatus.setAnimation(getWeatherStatusImage(currentWeatherResponse.getWeather().get(0).getMain()));
-//                imgWeatherStatus.animate();
                 imgWeatherStatus.loop(true);
                 imgWeatherStatus.playAnimation();
 
@@ -198,13 +200,12 @@ public class CurrentWeatherFragment extends Fragment {
     }
 
     private int getWeatherStatusImage(String weatherStatus) {
-
         try {
+
             return R.raw.class.getField(weatherStatus.toLowerCase()).getInt(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             return R.raw.clear;
         }
-
     }
 
     @Override
