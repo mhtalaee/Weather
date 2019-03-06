@@ -107,7 +107,8 @@ public class CurrentWeatherFragment extends Fragment {
         String currentWeatherUrl = currentWeatherApiBaseUrl + cityName + "," + countryCode + weatherApiId;
 
         currentWeatherClient.get(currentWeatherUrl, new JsonHttpResponseHandler() {
-
+            String desc = "";
+            String newDesc = "";
             @Override
             public void onStart() {
                 currentWeatherProgressBar.setVisibility(ProgressBar.VISIBLE);
@@ -121,6 +122,7 @@ public class CurrentWeatherFragment extends Fragment {
                 layoutCurrent.setVisibility(ProgressBar.VISIBLE);
                 super.onFinish();
             }
+
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -140,7 +142,15 @@ public class CurrentWeatherFragment extends Fragment {
 
                 tvCurrentWind.setText(currentWeatherResponse.getWind().getSpeed() + " m/s");
                 tvCurrentPressure.setText(currentWeatherResponse.getMain().getPressure() + "hpa");
-                tvCurrentCloudiness.setText(currentWeatherResponse.getWeather().get(0).getDescription());
+
+                desc = currentWeatherResponse.getWeather().get(0).getDescription();
+                String[] words = desc.split(" ");
+
+                for (int i = 0; i < words.length; i++) {
+                    newDesc += words[i].substring(0, 1).toUpperCase() + words[i].substring(1).concat(" ");
+                }
+
+                tvCurrentCloudiness.setText(newDesc.trim());
                 tvCurrentHumidity.setText(currentWeatherResponse.getMain().getHumidity() + "%");
 
                 SimpleDateFormat sunriseFormat = new SimpleDateFormat("HH:mm");

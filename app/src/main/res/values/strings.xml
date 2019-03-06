@@ -4,6 +4,8 @@
     <string name="open">Open</string>
     <string name="enter_country">Enter Country</string>
     <string name="add_city">Add City</string>
-    <string name="default_city">Tehran</string>
-    <string name="default_country_code">IR</string>
+    <string name="default_city">London</string>
+    <string name="default_country_code">GB</string>
+    <string name="select_default_city">Click on a city to set as default</string>
+    <string name="swipe_delete_city">Swipe left or right to delete city</string>
 </resources>

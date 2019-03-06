@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.orhanobut.hawk.Hawk;
@@ -35,7 +36,7 @@ public class AddCityActivity extends AppCompatActivity {
     AutoCompleteTextView etCity;
     JSONObject countries = null;
     ImageView imgFlag;
-    Button btnAdd;
+    ImageButton btnAdd;
     String cityCode;
     String countryCode;
     private ArrayList<City> userCities;
