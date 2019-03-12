@@ -21,7 +21,7 @@ import ir.goldenmind.weather.adapters.CityAdapter;
 import ir.goldenmind.weather.model.base.City;
 import ir.goldenmind.weather.utils.SwipeToDeleteCallback;
 
-public class CitiesFragment extends Fragment implements CityAdapter.ListItemClickListener {
+public class CitiesFragment extends Fragment {
 
     RecyclerView cityRecycler;
     View vCities;
@@ -36,7 +36,7 @@ public class CitiesFragment extends Fragment implements CityAdapter.ListItemClic
         cityRecycler = vCities.findViewById(R.id.cityRecycler);
 
         userCities = (Hawk.contains("UserCities")) ? userCities = Hawk.get("UserCities") : new ArrayList<City>();
-        CityAdapter cityAdapter = new CityAdapter(userCities, this);
+        CityAdapter cityAdapter = new CityAdapter(userCities);
         cityRecycler.setAdapter(cityAdapter);
         cityRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
@@ -49,18 +49,10 @@ public class CitiesFragment extends Fragment implements CityAdapter.ListItemClic
     @Override
     public void onResume() {
         userCities = (Hawk.contains("UserCities")) ? userCities = Hawk.get("UserCities") : new ArrayList<City>();
-        CityAdapter cityAdapter = new CityAdapter(userCities, this);
+        CityAdapter cityAdapter = new CityAdapter(userCities);
         cityRecycler.setAdapter(cityAdapter);
         cityRecycler.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         super.onResume();
     }
 
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-        userCities = (Hawk.contains("UserCities")) ? userCities = Hawk.get("UserCities") : new ArrayList<City>();
-        City userCity = userCities.get(clickedItemIndex);
-        Hawk.put("SelectedCityName",userCity.getCityName());
-        Hawk.put("SelectedCountryCode",userCity.getCountryCode());
-        Toast.makeText(getContext(),userCity.getCityName() + " set as default city", Toast.LENGTH_SHORT).show();
-    }
 }
