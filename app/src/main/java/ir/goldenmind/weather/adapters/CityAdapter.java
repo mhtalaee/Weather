@@ -46,10 +46,18 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
         return cityList.size();
     }
 
-    public void deleteItem(int position) {
+    public void removeItem(int position) {
         cityList.remove(position);
-        Hawk.put("UserCities", cityList);
         notifyItemRemoved(position);
+    }
+
+    public void restoreItem(City item, int position) {
+        cityList.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public List<City> getData() {
+        return cityList;
     }
 
     class CityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
