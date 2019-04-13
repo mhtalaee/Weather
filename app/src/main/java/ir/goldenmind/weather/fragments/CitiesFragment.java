@@ -65,7 +65,7 @@ public class CitiesFragment extends Fragment {
 
 
                 Snackbar snackbar = Snackbar
-                        .make(layoutForRecycler, "City was removed", Snackbar.LENGTH_LONG);
+                        .make(layoutForRecycler, "City was removed.", Snackbar.LENGTH_LONG);
                 snackbar.setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
